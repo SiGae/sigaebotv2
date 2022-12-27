@@ -1,0 +1,9 @@
+CONCH_MEAT = '마법의 소라고동'
+PERCENTAGE = '확률은?'
+
+POSITIVE_ANSWER = 'ㅇㅇ'
+NEGATIVE_ANSWER = 'ㄴㄴ'
+
+PERCENTAGE_STR = "퍼센트"
+
+PICK_SEPERATOR = [' ', ',']
