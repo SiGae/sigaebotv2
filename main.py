@@ -17,4 +17,11 @@ def select_bot(message):
             bot.reply_to(message, random.choice(msg))
 
 
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+    pprint(str(message))
+
+    if const.CONCH_MEAT in message.text:
+        bot.reply_to(message, random.choice([const.POSITIVE_ANSWER, const.NEGATIVE_ANSWER]))
+
 bot.infinity_polling()
