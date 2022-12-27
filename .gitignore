@@ -1,0 +1,4 @@
+.idea
+output
+config/__pycache__
+addon/__pycache__
