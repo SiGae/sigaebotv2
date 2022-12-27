@@ -24,4 +24,8 @@ def echo_all(message):
     if const.CONCH_MEAT in message.text:
         bot.reply_to(message, random.choice([const.POSITIVE_ANSWER, const.NEGATIVE_ANSWER]))
 
+    if const.PERCENTAGE in message.text:
+        bot.reply_to(message, str(random.randint(0, 100)) + const.PERCENTAGE_STR)
+
+
 bot.infinity_polling()
