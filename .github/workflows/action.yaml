@@ -45,7 +45,7 @@ jobs:
           echo "PROJECT_NAME=$PROJECT_NAME"
       - name: Build container image
         run: |
-          IMAGE_NAME=$PROJECT_NAME:$IMAGE_TAG
+          IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/$PROJECT_NAME:$IMAGE_TAG
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo "IMAGE_NAME=$IMAGE_NAME"
           docker build -t $IMAGE_NAME -f run.Dockerfile .
