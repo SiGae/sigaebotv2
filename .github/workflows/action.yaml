@@ -1,0 +1,56 @@
+name: Push container image to HCR
+
+on:
+  push:
+    # branches:
+    #   - main
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+jobs:
+  api-test-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      -
+        name: Show host info
+        run: |
+          uname -a
+          cat /etc/os-release
+      - name: Login NCP Private Registry
+        run: |
+          docker login \
+            -u ${{ secrets.DOCKER_HUB_USERNAME }} \
+            -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Choose image tag
+        run: |
+          echo "GITHUB_REF_TYPE=$GITHUB_REF_TYPE"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          if [[ "$GITHUB_REF_TYPE" = "tag" ]]; then
+            IMAGE_TAG=$GITHUB_REF_NAME
+            echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          else
+            IMAGE_TAG=$(git rev-parse --short $GITHUB_SHA)
+            echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          fi
+          echo "IMAGE_TAG=$IMAGE_TAG"
+      - name: Get to know the project name
+        run: |
+          PROJECT_NAME=sigaebot
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+          echo "PROJECT_NAME=$PROJECT_NAME"
+      - name: Build container image
+        run: |
+          IMAGE_NAME=$PROJECT_NAME:$IMAGE_TAG
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$IMAGE_NAME"
+          docker build -t $IMAGE_NAME -f run.Dockerfile .
+      - name: Push container image
+        if: github.ref == 'refs/heads/main' || github.ref_type == 'tag'
+        run: |
+          docker push $IMAGE_NAME
+          echo "Pushed container image: $IMAGE_NAME"
