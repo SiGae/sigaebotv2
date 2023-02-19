@@ -21,7 +21,7 @@ jobs:
         run: |
           uname -a
           cat /etc/os-release
-      - name: Login NCP Private Registry
+      - name: Login docker hub
         run: |
           docker login \
             -u ${{ secrets.DOCKER_HUB_USERNAME }} \
